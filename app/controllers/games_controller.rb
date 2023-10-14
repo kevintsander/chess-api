@@ -19,6 +19,7 @@ class GamesController < ApplicationController
     game_state.perform_action(action)
     game.save
 
+    ActionCable.server.broadcast("game_#{game.id}", { body: game })
     render json: game
   end
 
