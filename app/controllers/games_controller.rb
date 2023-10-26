@@ -5,6 +5,8 @@ class GamesController < ApplicationController
     game_state = ChessEngine::Game.new([player1, player2])
     game_state.start
     game = Game.create(game_state:)
+
+    ActionCable.server.broadcast("game_#{game.id}", { body: game })
     render json: game
   end
 
@@ -19,7 +21,7 @@ class GamesController < ApplicationController
     game_state.perform_action(action)
     game.save
 
-    ActionCable.server.broadcast("game_#{game.id}", { body: game })
+    ActionCable.server.broadcast("game_#{game.id}", game)
     render json: game
   end
 
