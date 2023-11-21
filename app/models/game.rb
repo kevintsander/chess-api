@@ -10,7 +10,7 @@ class Game < ApplicationRecord
   def as_json(options = {})
     opts = {
       only: %i[id created_at updated_at],
-      methods: %i[units allowed_actions]
+      methods: %i[turn current_player units allowed_actions]
     }
 
     super(options.merge(opts))
@@ -21,6 +21,14 @@ class Game < ApplicationRecord
       { player: unit.player.color, type: unit.class.name.demodulize, symbol: unit.symbol,
         location: unit.location }
     end
+  end
+
+  def current_player
+    game_state.current_player.color
+  end
+
+  def turn
+    game_state.turn
   end
 
   def allowed_actions
