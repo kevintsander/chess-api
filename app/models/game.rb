@@ -7,13 +7,16 @@ class Game < ApplicationRecord
                  'QueensideCastleMoveCommand' => 'QueensideCastle',
                  'EnPassantMoveCommand' => 'EnPassant' }.freeze
 
-  def as_json(options = {})
-    opts = {
-      only: %i[id created_at updated_at],
-      methods: %i[turn current_player units allowed_actions]
+  def simplified
+    {
+      id:,
+      created_at:,
+      updated_at:,
+      turn: game_state.turn,
+      current_player: game_state.current_player.color,
+      units:,
+      allowed_actions:
     }
-
-    super(options.merge(opts))
   end
 
   def units
@@ -23,17 +26,10 @@ class Game < ApplicationRecord
     end
   end
 
-  def current_player
-    game_state.current_player.color
-  end
-
-  def turn
-    game_state.turn
-  end
-
   def allowed_actions
     consolidated_actions = []
-    game_state.allowed_actions&.each do |_location, actions|
+
+    game_state.allowed_actions_cache&.each do |_location, actions|
       actions.each do |action|
         ## TODO player.name is probaly not best comparison
         is_current_player_action = action.moves.any? { |m| m.unit.player.name == game_state.current_player.name }
