@@ -37,5 +37,9 @@ module RailsChessApi
     end
     config.active_record.yaml_column_permitted_classes = [Symbol, ChessEngine::Game, ChessEngine::Board, ChessEngine::Player,
                                                           *chess_engine_unit_classes_with_namespace, *chess_engine_action_classes_with_namespace]
+
+    config.session_store :cookie_store, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
   end
 end

@@ -11,8 +11,11 @@ class GamesController < ApplicationController
   end
 
   def update
+    p "!!!!!!!!!!!!!!!!!curent_user: id=#{current_user.id} uid=#{current_user.uid}"
+
     id = params[:id]
     game = Game.find(id)
+
     game_state = game.game_state
     if %i[unit_location move_location].all? { |p| params.key?(p) }
       perform_action(game_state)
