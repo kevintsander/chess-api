@@ -50,3 +50,6 @@ group :development do
 end
 
 gem 'chess-engine'
+
+gem 'devise'
+gem 'devise_token_auth'

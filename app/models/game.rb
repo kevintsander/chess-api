@@ -1,4 +1,7 @@
 class Game < ApplicationRecord
+  has_one :player1_user, foreign_key: 'player1_user_id', class_name: 'User'
+  has_one :player2_user, foreign_key: 'player2_user_id', class_name: 'User'
+
   serialize :game_state
 
   ACTION_MAP = { 'NormalMoveCommand' => 'Move',
