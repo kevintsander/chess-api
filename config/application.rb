@@ -35,7 +35,7 @@ module RailsChessApi
     chess_engine_action_classes_with_namespace = chess_engine_action_classes.map do |c|
       ChessEngine::Actions.const_get(c)
     end
-    config.active_record.yaml_column_permitted_classes = [Symbol, ChessEngine::Game, ChessEngine::Board, ChessEngine::Player,
+    config.active_record.yaml_column_permitted_classes = [Symbol, ChessEngine::Game, ChessEngine::Board,
                                                           *chess_engine_unit_classes_with_namespace, *chess_engine_action_classes_with_namespace]
 
     config.session_store :cookie_store, key: '_interslice_session'

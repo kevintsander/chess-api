@@ -1,8 +1,6 @@
 class GamesController < ApplicationController
   def create
-    player1 = ChessEngine::Player.new('Kevin', :white)
-    player2 = ChessEngine::Player.new('Ivy', :black)
-    game_state = ChessEngine::Game.new([player1, player2])
+    game_state = ChessEngine::Game.new()
     game_state.start
     game = Game.create(game_state:)
 
@@ -11,7 +9,7 @@ class GamesController < ApplicationController
   end
 
   def update
-    p "!!!!!!!!!!!!!!!!!curent_user: id=#{current_user.id} uid=#{current_user.uid}"
+    p "curent_user: id=#{current_user.id} uid=#{current_user.uid}"
 
     id = params[:id]
     game = Game.find(id)

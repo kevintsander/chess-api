@@ -17,7 +17,7 @@ class Game < ApplicationRecord
       created_at:,
       updated_at:,
       turn: game_state.turn,
-      current_player: game_state.current_player.color,
+      current_color: game_state.current_color,
       units:,
       allowed_actions:,
       promote_location: game_state.promote_location,
@@ -27,7 +27,7 @@ class Game < ApplicationRecord
 
   def units
     game_state.board.units.map do |unit|
-      { player: unit.player.color, type: unit.class.name.demodulize, symbol: unit.symbol,
+      { color: unit.color, type: unit.class.name.demodulize, symbol: unit.symbol,
         location: unit.location }
     end
   end
