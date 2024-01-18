@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   def update
-    p user_params
     game = Game.find(user_params[:game_id])
 
     player_route = request.path.split('/')[-1]
@@ -12,6 +11,8 @@ class UsersController < ApplicationController
     end
 
     game.save
+
+    ActionCable.server.broadcast("game_#{game.id}", game.simplified )
   end
 
   private
