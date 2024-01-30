@@ -12,7 +12,7 @@ class GamesController < ApplicationController
     id = params[:id]
     game = Game.find(id)
 
-    unless game.current_player == current_user
+    unless current_user && game.current_player == current_user
       render json: "Logged in user is not current player", status: :unauthorized
       return      
     end
