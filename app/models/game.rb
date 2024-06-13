@@ -8,7 +8,7 @@ class Game < ApplicationRecord
                  'AttackMoveCommand' => 'Attack',
                  'KingsideCastleMoveCommand' => 'KingsideCastle',
                  'QueensideCastleMoveCommand' => 'QueensideCastle',
-                 'EnPassantMoveCommand' => 'EnPassant',
+                 'EnPassantCommand' => 'EnPassant',
                  'PromoteCommand' => 'Promote' }.freeze
 
   def simplified
