@@ -11,11 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2024_01_15_011915) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "pgcrypto"
-  enable_extension "plpgsql"
-
-  create_table "games", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "games", id: :uuid, default: -> { "newid()" }, force: :cascade do |t|
     t.text "game_state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -38,13 +34,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_011915) do
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.inet "current_sign_in_ip"
-    t.inet "last_sign_in_ip"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.string "name"
     t.string "nickname"
     t.string "image"
     t.string "email"
-    t.json "tokens"
+    t.text "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

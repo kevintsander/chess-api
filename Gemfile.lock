@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/kevintsander/chess-engine.git
+  revision: 1cc0fca4b66eed31300d24c9ee2475da1b53ec84
+  specs:
+    chess-engine (1.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -54,6 +60,9 @@ GEM
     activerecord (7.0.6)
       activemodel (= 7.0.6)
       activesupport (= 7.0.6)
+    activerecord-sqlserver-adapter (7.0.7)
+      activerecord (~> 7.0.0)
+      tiny_tds
     activestorage (7.0.6)
       actionpack (= 7.0.6)
       activejob (= 7.0.6)
@@ -70,7 +79,6 @@ GEM
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
-    chess-engine (1.0.0)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
     date (3.3.3)
@@ -121,7 +129,6 @@ GEM
     nokogiri (1.15.3-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pg (1.4.5)
     puma (5.6.6)
       nio4r (~> 2.0)
     racc (1.7.1)
@@ -166,6 +173,7 @@ GEM
       railties (>= 5.2)
     thor (1.2.2)
     timeout (0.4.0)
+    tiny_tds (2.1.7)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     warden (1.2.9)
@@ -179,15 +187,16 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  activerecord-sqlserver-adapter
   bootsnap
-  chess-engine
+  chess-engine!
   debug
   devise
   devise_token_auth
-  pg
   puma (~> 5.0)
   rack-cors
   rails (~> 7.0.4)
+  tiny_tds
   tzinfo-data
 
 RUBY VERSION

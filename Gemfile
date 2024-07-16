@@ -9,8 +9,12 @@ gem 'rails', '~> 7.0.4'
 # # Use sqlite3 as the database for Active Record
 # gem 'sqlite3', '~> 1.4'
 
-# User postgres as the database for Active Record
-gem 'pg'
+# Use postgres as the database for Active Record
+# gem 'pg'
+
+# Use sqlserver (Microsoft)
+gem 'tiny_tds'
+gem 'activerecord-sqlserver-adapter'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '~> 5.0'
@@ -49,7 +53,7 @@ group :development do
   # gem "spring"
 end
 
-gem 'chess-engine'
+gem 'chess-engine', git: 'https://github.com/kevintsander/chess-engine.git'
 
 gem 'devise'
 gem 'devise_token_auth'
