@@ -23,11 +23,17 @@ default: &default
 
 development:
   <<: *default
-  database: chess
-  host: host.docker.internal
-  port: 1433
-  username: sa
-  password: "K0N$7NmptTgQ" #change to env variable
+  # database: chess
+  # host: host.docker.internal
+  # port: 1433
+  # username: sa
+  # password: "K0N$7NmptTgQ" #change to env variable
+  database: <%= Rails.application.credentials.development.db.name %>
+  host: <%= Rails.application.credentials.development.db.host %>
+  port: <%= Rails.application.credentials.development.db.port %>
+  username: <%= Rails.application.credentials.development.db.user %>
+  password: "<%= Rails.application.credentials.development.db.password %>"
+  azure: <%= Rails.application.credentials.development.db.azure %>
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
