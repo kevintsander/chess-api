@@ -2,6 +2,7 @@ FROM ruby:3.1.2
 WORKDIR /usr/src/app
 COPY Gemfile Gemfile.lock ./
 
+RUN
 
 # Setup FreeTDS
 RUN wget ftp://ftp.freetds.org/pub/freetds/stable/freetds-1.4.19.tar.gz && \

@@ -1,6 +1,6 @@
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -10,6 +10,11 @@ module RailsChessApi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w(assets tasks))
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -28,7 +33,7 @@ module RailsChessApi
       ChessEngine::Units.const_get(c).is_a? Class
     end
     chess_engine_unit_classes_with_namespace = chess_engine_unit_classes.map { |c| ChessEngine::Units.const_get(c) }
-
+    
     chess_engine_action_classes = ChessEngine::Actions.constants.select do |c|
       ChessEngine::Actions.const_get(c).is_a? Class
     end
@@ -37,7 +42,7 @@ module RailsChessApi
     end
     config.active_record.yaml_column_permitted_classes = [Symbol, ChessEngine::Game, ChessEngine::Board,
                                                           *chess_engine_unit_classes_with_namespace, *chess_engine_action_classes_with_namespace]
-
+    
     config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
