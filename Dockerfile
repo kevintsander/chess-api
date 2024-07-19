@@ -2,8 +2,6 @@ FROM ruby:3.3.4
 WORKDIR /usr/src/app
 COPY Gemfile Gemfile.lock ./
 
-RUN
-
 # Setup FreeTDS
 RUN wget ftp://ftp.freetds.org/pub/freetds/stable/freetds-1.4.19.tar.gz && \
 		tar -xzf freetds-1.4.19.tar.gz && \
@@ -11,7 +9,10 @@ RUN wget ftp://ftp.freetds.org/pub/freetds/stable/freetds-1.4.19.tar.gz && \
 		./configure --prefix=/usr/local --with-tdsver=7.4 && \
 		make && \
 		make install
+
+# Install gems
 RUN bundle install
+
 ADD . /usr/src/app
 EXPOSE 3000
 CMD rails s -b 0.0.0.0
