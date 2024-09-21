@@ -67,8 +67,8 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
   
-  config.action_cable.allowed_request_origins = ['http://localhost:4200', 'https://proud-beach-078fe360f.5.azurestaticapps.net']
-  config.hosts << "test-container-app3.thankfulrock-d8e7a63e.northcentralus.azurecontainerapps.io"
+  config.action_cable.allowed_request_origins = ['http://localhost:4200', /.*\.azurestaticapps\.net/]
+  config.hosts << /.*\.azurecontainerapps\.io/
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
