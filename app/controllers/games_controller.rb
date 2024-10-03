@@ -1,4 +1,6 @@
 class GamesController < ApplicationController
+  before_action :require_login, only: [:create, :update]
+
   def create
     game_state = ChessEngine::Game.new()
     game_state.start
@@ -12,7 +14,7 @@ class GamesController < ApplicationController
     id = params[:id]
     game = Game.find(id)
 
-    unless current_user && game.current_player == current_user
+    unless game.current_player == current_user
       render json: "Logged in user is not current player", status: :unauthorized
       return      
     end
@@ -37,6 +39,12 @@ class GamesController < ApplicationController
   end
 
   private
+
+  def require_login
+    unless current_user
+      render json: "Must be logged in to perform this action", status: :unauthorized
+    end
+  end
 
   def perform_action(game_state)
     unit_location = params[:unit_location]
