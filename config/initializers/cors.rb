@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'localhost:4200', 'proud-beach-078fe360f.5.azurestaticapps.net'
+    origins 'localhost:4200', /https:\/\/.*\.azurestaticapps\.net/
 
     resource '*',
              headers: :any,
