@@ -19,8 +19,8 @@ env:
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   build-and-push-image:
-    environment: dev
     runs-on: ubuntu-latest
+    environment: dev
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read
@@ -67,6 +67,7 @@ jobs:
 
   push-container-to-azure:
     runs-on: ubuntu-latest
+    environment: dev
     needs: build-and-push-image
     steps:
       - name: Checkout repository
