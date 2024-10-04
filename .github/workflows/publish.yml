@@ -68,6 +68,8 @@ jobs:
   push-container-to-azure:
     runs-on: ubuntu-latest
     environment: dev
+    permissions:
+      id-token: write
     needs: build-and-push-image
     steps:
       - name: Checkout repository
