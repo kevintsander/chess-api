@@ -26,6 +26,8 @@ jobs:
       packages: write
       attestations: write
       id-token: write
+    outputs:
+      imageDigest: ${{ steps.push.outputs.digest }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -87,14 +89,13 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Update Azure Container App
-        uses: azure/container-apps-deploy-action@v1
-        with:
-          registryUrl: ${{ env.REGISTRY }}
-          registryUsername: ${{ github.actor }}
-          registryPassword: ${{ secrets.GITHUB_TOKEN }}
-          imageToDeploy: "${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:main"
-          containerAppName: "${{ env.CONTAINER_APP_NAME }}"
-          resourceGroup: "${{ env.RESOURCE_GROUP_NAME }}"
-          containerAppEnvironment: "${{ env.CONTAINER_APP_ENV_NAME }}"
-          yamlConfigPath: ${{ env.CONTAINER_APP_CONFIG_PATH }} # for the update to work there has to be a new revision, which can only be configured in
+      - name: Deploy to Azure Container Apps
+        run: |
+          az containerapp update \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP_NAME }} \
+            --image ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}@${{ needs.build.outputs.imageDigest }} \
+            --environment ${{ env.CONTAINER_APP_ENV_NAME }} \
+            --registry-server ${{ env.REGISTRY }} \
+            --registry-username ${{ secrets.AZURE_REGISTRY_USERNAME }} \
+            --registry-password ${{ secrets.AZURE_REGISTRY_PASSWORD }}
