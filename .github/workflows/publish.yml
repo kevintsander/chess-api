@@ -66,6 +66,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    needs: build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -78,7 +79,7 @@ jobs:
           changes: |
             {
               "template.revisionSuffix": "${{ github.run_id }}-${{ github.run_number }}",
-              "template.containers[0].name": "${{ env.IMAGE_NAME }}"
+              "template.containers[0].name": "${{ env.IMAGE_NAME }}",
               "template.containers[0].image": "${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}"
             }
           commitChange: false
