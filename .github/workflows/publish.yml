@@ -92,10 +92,9 @@ jobs:
       - name: Deploy to Azure Container Apps
         run: |
           az containerapp update \
-            --name ${{ env.CONTAINER_APP_NAME }} \
-            --resource-group ${{ env.RESOURCE_GROUP_NAME }} \
-            --image ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}@${{ needs.build.outputs.imageDigest }} \
-            --environment ${{ env.CONTAINER_APP_ENV_NAME }} \
-            --registry-server ${{ env.REGISTRY }} \
-            --registry-username ${{ secrets.AZURE_REGISTRY_USERNAME }} \
-            --registry-password ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+            -n ${{ env.CONTAINER_APP_NAME }} \
+            -g ${{ env.RESOURCE_GROUP_NAME }} \
+            --image ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}@${{ needs.build.outputs.imageDigest }}
+            --registry-username ${{ github.actor }} \
+            --registry-password ${{ secrets.GITHUB_TOKEN }} \
+            --registry-server ${{ env.REGISTRY }}
