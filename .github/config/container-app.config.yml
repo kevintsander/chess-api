@@ -2,3 +2,6 @@ properties:
   environmentId:
   template:
     revisionSuffix: replace_me
+    containers:
+      - name: chess-api
+        image: replace_me
