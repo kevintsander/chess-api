@@ -1,3 +1,4 @@
 properties:
+  environmentId:
   template:
     revisionSuffix: replace_me
