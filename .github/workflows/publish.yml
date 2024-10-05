@@ -76,7 +76,7 @@ jobs:
         uses: fjogeleit/yaml-update-action@main
         with:
           valueFile: ${{ env.CONTAINER_APP_CONFIG_PATH }}
-          property: template.revisionSuffix
+          propertyPath: template.revisionSuffix
           value: ${{ github.run_id }}-${{ github.run_number }}
           commitChange: false
 
