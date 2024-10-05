@@ -1,7 +1,3 @@
 properties:
-  environmentId:
   template:
     revisionSuffix: replace_me
-    containers:
-      - name: replace_me
-        image: replace_me

@@ -76,12 +76,8 @@ jobs:
         uses: fjogeleit/yaml-update-action@main
         with:
           valueFile: ${{ env.CONTAINER_APP_CONFIG_PATH }}
-          changes: |
-            {
-              "template.revisionSuffix": "${{ github.run_id }}-${{ github.run_number }}",
-              "template.containers[0].name": "${{ env.IMAGE_NAME }}",
-              "template.containers[0].image": "${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}"
-            }
+          property: template.revisionSuffix
+          value: ${{ github.run_id }}-${{ github.run_number }}
           commitChange: false
 
       - name: Azure Login
