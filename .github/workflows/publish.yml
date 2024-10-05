@@ -18,76 +18,76 @@ CONTAINER_APP_CONFIG_PATH: ./.github/config/container-app.config.yml
 RESOURCE_GROUP_NAME: rg-sander-chess-dev-01
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v2
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-            - name: Log in to GitHub Container Registry
-              uses: docker/login-action@v1
-              with:
-                registry: ${{ env.REGISTRY }}
-                username: ${{ github.actor }}
-                password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Extract metadata (tags, labels) for Docker
-              id: meta
-              uses: docker/metadata-action@v3
-              with:
-                images: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}
 
-            - name: Build and push Docker image
-              uses: docker/build-push-action@v3
-              with:
-                context: .
-                push: true
-                tags: ${{ steps.meta.outputs.tags }}
-                labels: ${{ steps.meta.outputs.labels }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
-            # This step generates an artifact attestation for the image, which is an unforgeable statement about where and how it was built. It increases supply chain security for people who consume the image. For more information, see "[AUTOTITLE](/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds)."
-            - name: Generate artifact attestation
-              uses: actions/attest-build-provenance@v1
-              with:
-                subject-name: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}
-                subject-digest: ${{ steps.push.outputs.digest }}
-                push-to-registry: true
+      # This step generates an artifact attestation for the image, which is an unforgeable statement about where and how it was built. It increases supply chain security for people who consume the image. For more information, see "[AUTOTITLE](/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds)."
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
 
-    deploy:
-        runs-on: ubuntu-latest
-        needs: build
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            # replace the revision suffix with the build
-            - name: Replace tokens in Container config
-              uses: fjogeleit/yaml-update-action@main
-              with:
-                valueFile: ${{ env.CONTAINER_APP_CONFIG_PATH }}
-                changes: |
-                {
-                  "template.revisionSuffix": "${{ github.run_id }}-${{ github.run_number }}",
-                  "template.containers[0].image": "${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}"
+      # replace the revision suffix with the build
+      - name: Replace tokens in Container config
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: ${{ env.CONTAINER_APP_CONFIG_PATH }}
+          changes: |
+            {
+              "template.revisionSuffix": "${{ github.run_id }}-${{ github.run_number }}",
+              "template.containers[0].image": "${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}"
 
-                }
-                commitChange: false
+            }
+          commitChange: false
 
-            - name: Azure Login
-              uses: azure/login@v2
-              with:
-                client-id: ${{ secrets.AZURE_CLIENT_ID }}
-                tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-                client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
-            - name: Update Azure Container App
-              uses: azure/container-apps-deploy-action@v1
-              with:
-                registryUrl: ${{ env.REGISTRY }}
-                registryUsername: ${{ github.actor }}
-                registryPassword: ${{ secrets.GITHUB_TOKEN }}
-                imageToDeploy: "${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
-                containerAppName: "${{ env.CONTAINER_APP_NAME }}"
-                resourceGroup: "${{ env.RESOURCE_GROUP_NAME }}"
-                containerAppEnvironment: "${{ env.CONTAINER_APP_ENV_NAME }}"
-                yamlConfigPath: ${{ env.CONTAINER_APP_CONFIG_PATH }} # for the update to work there has to be a new revision, which can only be configured in
+      - name: Update Azure Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          registryUrl: ${{ env.REGISTRY }}
+          registryUsername: ${{ github.actor }}
+          registryPassword: ${{ secrets.GITHUB_TOKEN }}
+          imageToDeploy: "${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          containerAppName: "${{ env.CONTAINER_APP_NAME }}"
+          resourceGroup: "${{ env.RESOURCE_GROUP_NAME }}"
+          containerAppEnvironment: "${{ env.CONTAINER_APP_ENV_NAME }}"
+          yamlConfigPath: ${{ env.CONTAINER_APP_CONFIG_PATH }} # for the update to work there has to be a new revision, which can only be configured in
