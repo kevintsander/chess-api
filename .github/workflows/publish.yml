@@ -12,7 +12,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   REPO_NAME: ${{ github.event.repository.name }}
-  CONTAINER_APP_NAME: cntapp-sander-chess-dev-01
+  CONTAINER_APP_NAME: cntapp-sander-chess-dev-02
   CONTAINER_APP_ENV_NAME: cntenv-sander-chess-01
   CONTAINER_APP_CONFIG_PATH: ./.github/config/container-app.config.yml
   RESOURCE_GROUP_NAME: rg-sander-chess-dev-01
