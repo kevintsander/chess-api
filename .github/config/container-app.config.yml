@@ -3,5 +3,5 @@ properties:
   template:
     revisionSuffix: replace_me
     containers:
-      - name: chess-api
+      - name: replace_me
         image: replace_me
