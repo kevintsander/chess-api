@@ -5,7 +5,7 @@ name: Build, Publish, and Deploy Container
 on:
   push:
     branches: ["main"]
-  workflow_dispatch:
+    workflow_dispatch:
 
 # Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
 env:
@@ -46,7 +46,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GHCR_READER_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -114,7 +114,7 @@ jobs:
             -i ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}@${{ needs.build.outputs.imageDigest }} \
             --registry-server ${{ env.REGISTRY }} \
             --registry-username ${{ github.actor }} \
-            --registry-password ${{ secrets.GITHUB_TOKEN }} \
+            --registry-password ${{ secrets.GHCR_READER_TOKEN }} \
             --env-vars \
             CHESS_SQL_DB_NAME=${{ env.SQL_DB_NAME }} \
             CHESS_SQL_HOST=${{ env.SQL_HOST }} \
