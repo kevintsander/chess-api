@@ -18,7 +18,8 @@ env:
   CONTAINER_APP_ENV_NAME: cntenv-sander-chess-01
   CONTAINER_APP_CONFIG_PATH: ./.github/config/container-app.config.yml
   CONTAINER_APP_PORT: 3000
-  RESOURCE_GROUP_NAME: rg-sander-chess-dev-01
+  CHESS_RESOURCE_GROUP_NAME: rg-sander-chess-dev-01
+  SHARED_RESOURCE_GROUP_NAME: rg-sander-shared-dev-01
   KEYVAULT_NAME: kv-sander-shared-dev-05
   SQL_DB_NAME: chess-dev-01
   SQL_HOST: sqlsrv-sander-shared-dev-03
@@ -102,14 +103,14 @@ jobs:
         run: |
           az containerapp secret set \
             -n ${{ env.CONTAINER_APP_NAME }} \
-            -g ${{ env.RESOURCE_GROUP_NAME }} \
-            -s ${{ env.SQL_PASSWORD_SECRET_NAME }}=keyvaultref:https://${{ env.KEYVAULT_NAME }}.vault.azure.net/secrets/${{ env.SQL_PASSWORD_SECRET_NAME }},identityref:/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.RESOURCE_GROUP_NAME }}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${{ env.USER_ASSIGNED_IDENTITY_NAME }}
+            -g ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
+            -s ${{ env.SQL_PASSWORD_SECRET_NAME }}=keyvaultref:https://${{ env.KEYVAULT_NAME }}.vault.azure.net/secrets/${{ env.SQL_PASSWORD_SECRET_NAME }},identityref:/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.SHARED_RESOURCE_GROUP_NAME }}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${{ env.USER_ASSIGNED_IDENTITY_NAME }}
 
       - name: Deploy to Azure Container Apps
         run: |
           az containerapp up \
             -n ${{ env.CONTAINER_APP_NAME }} \
-            -g ${{ env.RESOURCE_GROUP_NAME }} \
+            -g ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
             -i ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}@${{ needs.build.outputs.imageDigest }} \
             --registry-server ${{ env.REGISTRY }} \
             --registry-username ${{ github.actor }} \
