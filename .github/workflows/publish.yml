@@ -99,12 +99,12 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # - name: Create/update Container App Secret
-      #   run: |
-      #     az containerapp secret set \
-      #       -n ${{ env.CONTAINER_APP_NAME }} \
-      #       -g ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
-      #       -s ${{ env.SQL_PASSWORD_SECRET_NAME }}=keyvaultref:https://${{ env.KEYVAULT_NAME }}.vault.azure.net/secrets/${{ env.SQL_PASSWORD_SECRET_NAME }},identityref:/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.SHARED_RESOURCE_GROUP_NAME }}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${{ env.USER_ASSIGNED_IDENTITY_NAME }}
+      - name: Create/update Container App Secret
+        run: |
+          az containerapp secret set \
+            -n ${{ env.CONTAINER_APP_NAME }} \
+            -g ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
+            -s ${{ env.SQL_PASSWORD_SECRET_NAME }}=keyvaultref:https://${{ env.KEYVAULT_NAME }}.vault.azure.net/secrets/${{ env.SQL_PASSWORD_SECRET_NAME }},identityref:/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.SHARED_RESOURCE_GROUP_NAME }}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${{ env.USER_ASSIGNED_IDENTITY_NAME }}
 
       - name: Deploy to Azure Container Apps
         run: |
