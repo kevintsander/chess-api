@@ -124,15 +124,15 @@ jobs:
             CHESS_SQL_AZURE=true \
             --target-port ${{ env.CONTAINER_APP_PORT }}
 
-      - name: Add GitHub Runner IP to SQL Server firewall
-        run: |
-          RUNNER_IP=$(curl -s https://api.ipify.org)
-          az sql server firewall-rule create \
-            --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
-            --server ${{ env.SQL_HOST }} \
-            --name AllowGitHubRunner \
-            --start-ip-address $RUNNER_IP \
-            --end-ip-address $RUNNER_IP
+      # - name: Add GitHub Runner IP to SQL Server firewall
+      #   run: |
+      #     RUNNER_IP=$(curl -s https://api.ipify.org)
+      #     az sql server firewall-rule create \
+      #       --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
+      #       --server ${{ env.SQL_HOST }} \
+      #       --name AllowGitHubRunner \
+      #       --start-ip-address $RUNNER_IP \
+      #       --end-ip-address $RUNNER_IP
 
       - name: Run custom command in container
         run: |
@@ -148,10 +148,10 @@ jobs:
       #       --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
       #       --command "rails db:prepare"
 
-      - name: Remove GitHub Runner IP from SQL Server firewall
-        if: always()
-        run: |
-          az sql server firewall-rule delete \
-            --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
-            --server ${{ env.SQL_HOST }} \
-            --name AllowGitHubRunner
+      # - name: Remove GitHub Runner IP from SQL Server firewall
+      #   if: always()
+      #   run: |
+      #     az sql server firewall-rule delete \
+      #       --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
+      #       --server ${{ env.SQL_HOST }} \
+      #       --name AllowGitHubRunner
