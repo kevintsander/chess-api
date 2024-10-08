@@ -116,9 +116,9 @@ jobs:
             --registry-username ${{ github.actor }} \
             --registry-password ${{ secrets.GITHUB_TOKEN }} \
             --env-vars \
-            --CHESS_SQL_DB_NAME=${{ env.SQL_DB_NAME }} \
-            --CHESS_SQL_HOST=${{ env.SQL_HOST }} \
-            --CHESS_SQL_PORT=${{ env.SQL_PORT }} \
-            --CHESS_SQL_USERNAME=${{ env.SQL_USERNAME }} \
-            --CHESS_SQL_PASSWORD=secretref:CHESS_SQL_PASSWORD \
+            CHESS_SQL_DB_NAME=${{ env.SQL_DB_NAME }} \
+            CHESS_SQL_HOST=${{ env.SQL_HOST }} \
+            CHESS_SQL_PORT=${{ env.SQL_PORT }} \
+            CHESS_SQL_USERNAME=${{ env.SQL_USERNAME }} \
+            CHESS_SQL_PASSWORD=secretref:CHESS_SQL_PASSWORD \
             --target-port ${{ env.CONTAINER_APP_PORT }}
