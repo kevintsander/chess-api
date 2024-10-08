@@ -83,9 +83,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check Azure CLI version
-        run: az --version
-
       # replace the revision suffix with the build
       - name: Replace tokens in Container config
         uses: fjogeleit/yaml-update-action@main
@@ -136,12 +133,19 @@ jobs:
             --start-ip-address $RUNNER_IP \
             --end-ip-address $RUNNER_IP
 
-      - name: Create/Update Rails Database
+      - name: Run custom command in container
         run: |
-          az containerapp exec \
+          script -q -c 'az containerapp exec \
             --name ${{ env.CONTAINER_APP_NAME }} \
             --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
-            --command "rails db:prepare"
+            --command "rails db:prepare"'
+
+      # - name: Create/Update Rails Database
+      #   run: |
+      #     az containerapp exec \
+      #       --name ${{ env.CONTAINER_APP_NAME }} \
+      #       --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
+      #       --command "rails db:prepare"
 
       - name: Remove GitHub Runner IP from SQL Server firewall
         if: always()
