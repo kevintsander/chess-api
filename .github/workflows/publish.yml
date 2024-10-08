@@ -83,6 +83,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check Azure CLI version
+        run: az --version
+
       # replace the revision suffix with the build
       - name: Replace tokens in Container config
         uses: fjogeleit/yaml-update-action@main
