@@ -12,6 +12,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: chess-api
   REPO_NAME: kevintsander-org
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  USER_ASSIGNED_IDENTITY_NAME: mi-sander-shared-dev-01
   CONTAINER_APP_NAME: cntapp-sander-chess-dev-01
   CONTAINER_APP_ENV_NAME: cntenv-sander-chess-01
   CONTAINER_APP_CONFIG_PATH: ./.github/config/container-app.config.yml
@@ -101,7 +103,7 @@ jobs:
           az containerapp secret set \
             -n ${{ env.CONTAINER_APP_NAME }} \
             -g ${{ env.RESOURCE_GROUP_NAME }} \
-            -s CHESS_SQL_PASSWORD=keyvaultref:https://${{ env.KEYVAULT_NAME }}.vault.azure.net/secrets/{{ env.SQL_PASSWORD_SECRET_NAME }}
+            -s CHESS_SQL_PASSWORD=keyvaultref:https://${{ env.KEYVAULT_NAME }}.vault.azure.net/secrets/${{ env.SQL_PASSWORD_SECRET_NAME }},identityref:/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.RESOURCE_GROUP_NAME }}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${{ env.USER_ASSIGNED_IDENTITY_NAME }}
 
       - name: Deploy to Azure Container Apps
         run: |
