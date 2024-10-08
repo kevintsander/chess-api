@@ -14,7 +14,7 @@ env:
   REPO_NAME: kevintsander-org
   AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   USER_ASSIGNED_IDENTITY_NAME: mi-sander-shared-dev-01
-  CONTAINER_APP_NAME: cntapp-sander-chess-dev-01
+  CONTAINER_APP_NAME: cntapp-sander-chess-dev-03
   CONTAINER_APP_ENV_NAME: cntenv-sander-chess-01
   CONTAINER_APP_CONFIG_PATH: ./.github/config/container-app.config.yml
   CONTAINER_APP_PORT: 3000
