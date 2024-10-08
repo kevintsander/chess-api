@@ -12,7 +12,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: chess-api
   REPO_NAME: kevintsander-org
-  CONTAINER_APP_NAME: cntapp-sander-chess-dev-02
+  CONTAINER_APP_NAME: cntapp-sander-chess-dev-01
   CONTAINER_APP_ENV_NAME: cntenv-sander-chess-01
   CONTAINER_APP_CONFIG_PATH: ./.github/config/container-app.config.yml
   CONTAINER_APP_PORT: 3000
