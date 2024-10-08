@@ -127,7 +127,7 @@ jobs:
         run: |
           RUNNER_IP=$(curl -s https://api.ipify.org)
           az sql server firewall-rule create \
-            --resource-group ${{ env.SHARED_RESOURCE_GROUP_NAME }} \
+            --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
             --server ${{ env.SQL_HOST }} \
             --name AllowGitHubRunner \
             --start-ip-address $RUNNER_IP \
@@ -144,6 +144,6 @@ jobs:
         if: always()
         run: |
           az sql server firewall-rule delete \
-            --resource-group ${{ env.SHARED_RESOURCE_GROUP_NAME }} \
+            --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
             --server ${{ env.SQL_HOST }} \
             --name AllowGitHubRunner
