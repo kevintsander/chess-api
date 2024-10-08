@@ -120,5 +120,5 @@ jobs:
             CHESS_SQL_HOST=${{ env.SQL_HOST }} \
             CHESS_SQL_PORT=${{ env.SQL_PORT }} \
             CHESS_SQL_USERNAME=${{ env.SQL_USERNAME }} \
-            CHESS_SQL_PASSWORD=secretref:CHESS_SQL_PASSWORD \
+            CHESS_SQL_PASSWORD=secretref:${{ env.SQL_PASSWORD_SECRET_NAME }} \
             --target-port ${{ env.CONTAINER_APP_PORT }}
