@@ -122,3 +122,10 @@ jobs:
             CHESS_SQL_USERNAME=${{ env.SQL_USERNAME }} \
             CHESS_SQL_PASSWORD=secretref:${{ env.SQL_PASSWORD_SECRET_NAME }} \
             --target-port ${{ env.CONTAINER_APP_PORT }}
+
+      - name: Create/Update Rails Database
+        run: |
+          az containerapp exec \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
+            --command "rails db:prepare"
