@@ -22,7 +22,7 @@ env:
   SHARED_RESOURCE_GROUP_NAME: rg-sander-shared-dev-01
   KEYVAULT_NAME: kv-sander-shared-dev-05
   SQL_DB_NAME: chess-dev-01
-  SQL_HOST: sqlsrv-sander-shared-dev-03
+  SQL_HOST: sqlsrv-sander-shared-dev-03.database.windows.net
   SQL_PORT: 1433
   SQL_USERNAME: "sanderkt"
   SQL_PASSWORD_SECRET_NAME: chess-sql-server-admin-password
