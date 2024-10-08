@@ -15,8 +15,14 @@ env:
   CONTAINER_APP_NAME: cntapp-sander-chess-dev-02
   CONTAINER_APP_ENV_NAME: cntenv-sander-chess-01
   CONTAINER_APP_CONFIG_PATH: ./.github/config/container-app.config.yml
+  CONTAINER_APP_PORT: 3000
   RESOURCE_GROUP_NAME: rg-sander-chess-dev-01
-
+  KEYVAULT_NAME: kv-sander-shared-dev-05
+  SQL_DB_NAME: chess-dev-01
+  SQL_HOST: sqlsrv-sander-shared-dev-03
+  SQL_PORT: 1433
+  SQL_USERNAME: "sanderkt"
+  SQL_PASSWORD_SECRET_NAME: chess-sql-server-admin-password
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -90,6 +96,13 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Create/update Container App Secret
+        run: |
+          az containerapp secret set \
+            -n ${{ env.CONTAINER_APP_NAME }} \
+            -g ${{ env.RESOURCE_GROUP_NAME }} \
+            -s CHESS_SQL_PASSWORD=keyvaultref:https://${{ env.KEYVAULT_NAME }}.vault.azure.net/secrets/{{ env.SQL_PASSWORD_SECRET_NAME }}
+
       - name: Deploy to Azure Container Apps
         run: |
           az containerapp up \
@@ -98,4 +111,11 @@ jobs:
             -i ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}@${{ needs.build.outputs.imageDigest }} \
             --registry-server ${{ env.REGISTRY }} \
             --registry-username ${{ github.actor }} \
-            --registry-password ${{ secrets.GITHUB_TOKEN }}
+            --registry-password ${{ secrets.GITHUB_TOKEN }} \
+            --env-vars \
+            --CHESS_SQL_DB_NAME=${{ env.SQL_DB_NAME }} \
+            --CHESS_SQL_HOST=${{ env.SQL_HOST }} \
+            --CHESS_SQL_PORT=${{ env.SQL_PORT }} \
+            --CHESS_SQL_USERNAME=${{ env.SQL_USERNAME }} \
+            --CHESS_SQL_PASSWORD=secretref:CHESS_SQL_PASSWORD \
+            --target-port ${{ env.CONTAINER_APP_PORT }}

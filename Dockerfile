@@ -1,14 +1,18 @@
-FROM ruby:3.3.4
+FROM ghcr.io/kevintsander/rails-free-tds-image:main
 WORKDIR /usr/src/app
 COPY Gemfile Gemfile.lock ./
 
-# Setup FreeTDS
-RUN wget ftp://ftp.freetds.org/pub/freetds/stable/freetds-1.4.19.tar.gz && \
-		tar -xzf freetds-1.4.19.tar.gz && \
-		cd freetds-1.4.19 && \
-		./configure --prefix=/usr/local --with-tdsver=7.4 && \
-		make && \
-		make install
+# FROM ruby:3.3.4
+# WORKDIR /usr/src/app
+# COPY Gemfile Gemfile.lock ./
+
+# # Setup FreeTDS
+# RUN wget ftp://ftp.freetds.org/pub/freetds/stable/freetds-1.4.19.tar.gz && \
+# 		tar -xzf freetds-1.4.19.tar.gz && \
+# 		cd freetds-1.4.19 && \
+# 		./configure --prefix=/usr/local --with-tdsver=7.4 && \
+# 		make && \
+# 		make install
 
 # Install gems
 RUN bundle install
