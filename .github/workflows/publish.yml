@@ -121,6 +121,7 @@ jobs:
             CHESS_SQL_PORT=${{ env.SQL_PORT }} \
             CHESS_SQL_USERNAME=${{ env.SQL_USERNAME }} \
             CHESS_SQL_PASSWORD=secretref:${{ env.SQL_PASSWORD_SECRET_NAME }} \
+            CHESS_SQL_AZURE=true \
             --target-port ${{ env.CONTAINER_APP_PORT }}
 
       - name: Add GitHub Runner IP to SQL Server firewall
