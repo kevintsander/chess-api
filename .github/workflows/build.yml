@@ -13,6 +13,24 @@ env:
   IMAGE_NAME: chess-api
   REPO_NAME: kevintsander-org
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3.4"
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Run tests
+        run: bundle exec rspec
+
   update-version:
     runs-on: ubuntu-latest
 
