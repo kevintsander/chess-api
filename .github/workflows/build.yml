@@ -103,7 +103,7 @@ jobs:
         run: echo "imageDigest=${{ steps.push.outputs.digest }}" > build_artifact.txt
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-artifact
           path: build_artifact.txt

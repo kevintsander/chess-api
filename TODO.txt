@@ -1,0 +1,2 @@
+1. Remove github group
+2. Add local environment
