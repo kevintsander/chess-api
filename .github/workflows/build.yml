@@ -15,15 +15,19 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      packages: read
+    container:
+      image: ghcr.io/kevintsander/rails-free-tds-image:main
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.3.4"
+      # - name: Set up Ruby
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: "3.3.4"
 
       - name: Install dependencies
         run: bundle install
