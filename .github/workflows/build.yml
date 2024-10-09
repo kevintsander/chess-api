@@ -37,7 +37,7 @@ jobs:
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}.${build_number}"
           echo $new_version > .version
           echo "Updated version to $new_version"
-          echo "::set-output name=new_version::$new_version"
+          echo "VERSION=$new_version" >> $GITHUB_ENV
 
       - name: Commit and push version update
         run: |
@@ -97,5 +97,5 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.IMAGE_NAME }}_${{ steps.increment-version.outputs.new_version }}
+          name: ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
           path: build_artifact.txt
