@@ -51,6 +51,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
+          path: build_artifact.txt
 
       - name: Read build artifact
         id: read_build_artifact
