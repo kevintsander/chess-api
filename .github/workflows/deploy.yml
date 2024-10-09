@@ -41,11 +41,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Get version from .version file
+        id: get_version
+        run: |
+          version=$(cat .version)
+          echo "VERSION=$version" >> $GITHUB_ENV
+
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
-          path: .
+          path: ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
 
       - name: Read build artifact
         id: read_build_artifact

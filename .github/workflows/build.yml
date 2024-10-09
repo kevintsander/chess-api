@@ -28,6 +28,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Increment version
+        id: increment-version
         run: |
           current_version=$(cat .version)
           IFS='.' read -r -a version_parts <<< "$current_version"
@@ -36,6 +37,7 @@ jobs:
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}.${build_number}"
           echo $new_version > .version
           echo "Updated version to $new_version"
+          echo "::set-output name=new_version::$new_version"
 
       - name: Commit and push version update
         run: |
@@ -93,7 +95,7 @@ jobs:
         run: echo "imageDigest=${{ steps.push.outputs.digest }}" > build_artifact.txt
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: build-artifact
-          path: build_artifact.txt
+          name: ${{ env.IMAGE_NAME }}_${{ steps.increment-version.outputs.new_version }}
+          path: ./publish
