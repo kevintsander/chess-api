@@ -39,11 +39,10 @@ Ruby on Rails API for managing and playing Chess, backed by the [`chess-engine` 
 
    If a user desires to use a different database, database settings can be customized further via the `config/database.yml` file. Additional modifications may be required in migrations and application code to accommodate different providers.
 
-#### Deploy the database:
-
-```sh
-rails db:prepare
-```
+5. Deploy the database
+   ```sh
+   rails db:prepare
+   ```
 
 ## Usage
 
@@ -53,11 +52,11 @@ rails db:prepare
    ```
 2. Access the API at `http://localhost:3000`
 
-## Running with Docker
+### Running with Docker
 
 You can also run the application using Docker. Update or override the `.env.development-docker` file with the desired settings, then follow these steps:
 
-### Using Dockerfile
+#### Using Dockerfile
 
 1. Build the Docker image:
 
@@ -71,7 +70,7 @@ You can also run the application using Docker. Update or override the `.env.deve
    ```
 3. Access the API at `http://localhost:3000`
 
-### Using Docker Compose
+#### Using Docker Compose
 
 1. Run Docker Compose:
 
