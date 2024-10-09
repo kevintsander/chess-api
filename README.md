@@ -22,25 +22,22 @@ Ruby on Rails API for managing and playing Chess, backed by the [`chess-engine` 
    ```sh
    bundle install
    ```
+4. Database Setup
 
-### Database Setup
+   To configure the application to connect to your Microsoft SQL database, update your system or `.env.development` file with your database settings:
 
-To configure the application to connect to your Microsoft SQL database, update the `.env.development` file with your database settings. Set the following variables:
+   ```shell
+   CHESS_SQL_DB_NAME="your_database_name"  # The name of your SQL database
+   CHESS_SQL_HOST="your_sql_host"          # The hostname (FQDN) or IP address of your SQL server
+   CHESS_SQL_PORT="your_sql_port"          # The port number on which your SQL server is listening (default is 1433)
+   CHESS_SQL_USERNAME="your_sql_username"  # The username for your SQL database
+   CHESS_SQL_PASSWORD="your_sql_password"  # The password for your SQL database
+   CHESS_SQL_AZURE="false"                 # Set to "true" if using Azure SQL Database, otherwise "false"
+   ```
 
-#### Example Configuration
+   For more information on how to use `.env` files, you can reference the [dotenv documentation](https://github.com/bkeepers/dotenv).
 
-```shell
-CHESS_SQL_DB_NAME="your_database_name"  # The name of your SQL database
-CHESS_SQL_HOST="your_sql_host"          # The hostname or IP address of your SQL server
-CHESS_SQL_PORT="your_sql_port"          # The port number on which your SQL server is listening (default is 1433)
-CHESS_SQL_USERNAME="your_sql_username"  # The username for your SQL database
-CHESS_SQL_PASSWORD="your_sql_password"  # The password for your SQL database
-CHESS_SQL_AZURE="false"                 # Set to "true" if using Azure SQL Database, otherwise "false"
-```
-
-For more information on how to use `.env` files, you can reference the [dotenv documentation](https://github.com/bkeepers/dotenv).
-
-If a user desires to use a different database, database settings can be customized further via the `config/database.yml` file. Additional modifications may be required in migrations and application code to accommodate different providers.
+   If a user desires to use a different database, database settings can be customized further via the `config/database.yml` file. Additional modifications may be required in migrations and application code to accommodate different providers.
 
 #### Deploy the database:
 
@@ -177,6 +174,10 @@ User confirmations are on, but emails will not be delivered by default. Get the 
     "user_id": "integer"
   }
   ```
+
+### Versioning
+
+This application uses a `.version` file to keep track of the version number. To update the version, modify the `.version` file in the project root.
 
 ## License
 
