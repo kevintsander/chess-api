@@ -38,6 +38,7 @@ jobs:
           echo $new_version > .version
           echo "Updated version to $new_version"
           echo "VERSION=$new_version" >> $GITHUB_ENV
+          echo "VERSION=$new_version"
 
       - name: Commit and push version update
         run: |
