@@ -7,12 +7,13 @@ on:
     workflows: ["Build"]
     types:
       - completed
+    status:
+      - success
 
 # Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: chess-api
-  REPO_NAME: kevintsander-org
   AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   USER_ASSIGNED_IDENTITY_NAME: mi-sander-shared-dev-01
   CONTAINER_APP_NAME: cntapp-sander-chess-dev-03
@@ -101,7 +102,7 @@ jobs:
           az containerapp up \
             -n ${{ env.CONTAINER_APP_NAME }} \
             -g ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
-            -i ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}@${{ steps.read_build_artifact.outputs.imageDigest }} \
+            -i ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}@${{ steps.read_build_artifact.outputs.imageDigest }} \
             --registry-server ${{ env.REGISTRY }} \
             --registry-username ${{ github.actor }} \
             --registry-password ${{ secrets.GHCR_TOKEN }} \
