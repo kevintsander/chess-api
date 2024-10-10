@@ -121,12 +121,19 @@ jobs:
             RAILS_ENV=development \
             --target-port ${{ env.CONTAINER_APP_PORT }}
 
+      - name: Wake up the database
+        run: |
+          az sql db show \
+            --name ${{ env.SQL_DB_NAME }} \
+            --server ${{ env.SQL_HOST }} \
+            --resource-group ${{ env.SHARED_RESOURCE_GROUP_NAME }}
+
       - name: Create/Update Rails Database
         run: |
-          script -q -c 'az containerapp exec \
+          az containerapp exec \
             --name ${{ env.CONTAINER_APP_NAME }} \
             --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
-            --command "rails db:prepare"'
+            --command "bash -c 'rails db:prepare || { echo \"Rails db:prepare failed\"; exit 1; }'"
         # --command "bash -c 'for i in {1..5}; do rails db:prepare && break || sleep 10; done'"' if we want retries?
 
       # this is the more direct way of doing this but currently gives a known error
