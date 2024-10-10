@@ -45,6 +45,7 @@ jobs:
         run: |
           version=$(cat .version)
           echo "VERSION=$version" >> $GITHUB_ENV
+          echo "Version: $version"
 
       - name: "Download artifact"
         uses: actions/github-script@v6
@@ -68,7 +69,10 @@ jobs:
             fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/${{ env.IMAGE_NAME }}_${{ env.VERSION }}.zip`, Buffer.from(download.data));
 
       - name: "Unzip artifact"
-        run: unzip ${{ env.IMAGE_NAME }}_${{ env.VERSION }}.zip -d ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
+        run: |
+          unzip ${{ env.IMAGE_NAME }}_${{ env.VERSION }}.zip -d ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
+          echo "Contents of the folder:"
+          ls -l ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
 
       - name: "Set imageDigest environment variable"
         run: |

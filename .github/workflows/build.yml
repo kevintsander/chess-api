@@ -48,7 +48,7 @@ jobs:
           git tag -a "v$(cat .version)" -m "Version $(cat .version)"
           git push
           git push origin "v$(cat .version)"
-          env:
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build:
