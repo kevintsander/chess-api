@@ -1,3 +1,3 @@
 1. Remove github group
 2. Add local environment
-3/ remove 
+3/ remove keyvault?
