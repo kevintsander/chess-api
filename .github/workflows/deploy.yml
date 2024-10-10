@@ -23,7 +23,7 @@ env:
   SHARED_RESOURCE_GROUP_NAME: rg-sander-shared-dev-01
   KEYVAULT_NAME: kv-sander-shared-dev-05
   SQL_DB_NAME: chess-dev-01
-  SQL_HOST: sqlsrv-sander-shared-dev-03.database.windows.net
+  SQL_SERVER_NAME: sqlsrv-sander-shared-dev-03
   SQL_PORT: 1433
   SQL_USERNAME: "sanderkt"
   SQL_PASSWORD_SECRET_NAME: chess-sql-server-admin-password
@@ -77,10 +77,12 @@ jobs:
           echo "Files in the folder:"
           ls ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
 
-      - name: "Set imageDigest environment variable"
+      - name: "Set imageDigest output"
+        id: read_build_artifact
         run: |
           imageDigest=$(cat ${{ env.IMAGE_NAME }}_${{ env.VERSION }}/build_artifact.txt | grep imageDigest | cut -d '=' -f 2)
           echo "Image Digest: $imageDigest"
+          echo "::set-output name=imageDigest::$imageDigest"
 
       - name: Azure Login
         uses: azure/login@v2
@@ -107,7 +109,7 @@ jobs:
             --registry-password ${{ secrets.GHCR_TOKEN }} \
             --env-vars \
             CHESS_SQL_DB_NAME=${{ env.SQL_DB_NAME }} \
-            CHESS_SQL_HOST=${{ env.SQL_HOST }} \
+            CHESS_SQL_HOST=${{ env.SQL_SERVER_NAME }}.database.windows.net \
             CHESS_SQL_PORT=${{ env.SQL_PORT }} \
             CHESS_SQL_USERNAME=${{ env.SQL_USERNAME }} \
             CHESS_SQL_PASSWORD=secretref:${{ env.SQL_PASSWORD_SECRET_NAME }} \
@@ -119,7 +121,7 @@ jobs:
         run: |
           az sql db show \
             --name ${{ env.SQL_DB_NAME }} \
-            --server ${{ env.SQL_HOST }} \
+            --server ${{ env.SQL_SERVER_NAME }} \
             --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }}
 
       - name: Create/Update Rails Database
