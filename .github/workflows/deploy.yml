@@ -56,7 +56,6 @@ jobs:
               repo: context.repo.repo,
               run_id: context.payload.workflow_run.id,
             });
-            console.log("All Artifacts:", allArtifacts.data.artifacts);
 
             let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
               return artifact.name == "${{ env.IMAGE_NAME }}_${{ env.VERSION }}"
@@ -75,26 +74,13 @@ jobs:
       - name: "Unzip artifact"
         run: |
           unzip ${{ env.IMAGE_NAME }}_${{ env.VERSION }}.zip -d ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
-          echo "Contents of the folder:"
-          ls -l ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
+          echo "Files in the folder:"
+          ls ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
 
       - name: "Set imageDigest environment variable"
         run: |
           imageDigest=$(cat ${{ env.IMAGE_NAME }}_${{ env.VERSION }}/build_artifact.txt | grep imageDigest | cut -d '=' -f 2)
-          echo "imageDigest=$imageDigest" >> $GITHUB_ENV
-
-      # - name: Download build artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
-      #     run_id:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Read build artifact
-      #   id: read_build_artifact
-      #   run: |
-      #     imageDigest=$(cat build_artifact.txt | grep imageDigest | cut -d '=' -f 2)
-      #     echo "::set-output name=imageDigest::$imageDigest" >> $GITHUB_ENV
+          echo "Image Digest: $imageDigest"
 
       - name: Azure Login
         uses: azure/login@v2
@@ -134,7 +120,7 @@ jobs:
           az sql db show \
             --name ${{ env.SQL_DB_NAME }} \
             --server ${{ env.SQL_HOST }} \
-            --resource-group ${{ env.SHARED_RESOURCE_GROUP_NAME }}
+            --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }}
 
       - name: Create/Update Rails Database
         run: |

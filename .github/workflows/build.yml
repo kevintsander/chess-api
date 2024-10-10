@@ -92,9 +92,16 @@ jobs:
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
+          output-file: attestation.json
 
       - name: Create build artifact
         run: echo "imageDigest=${{ steps.push.outputs.digest }}" > build_artifact.txt
+
+      - name: Combine artifacts
+        run: |
+          mkdir -p artifact
+          mv build_artifact.txt artifact/
+          mv attestation.json artifact/
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
