@@ -37,7 +37,7 @@ jobs:
           build_number=$(date +%Y%m%d%H%M%S)
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}.${build_number}"
           echo $new_version > .version
-          echo "Updated version to $new_version"
+          echo "::set-output name=new_version::$new_version"
 
       - name: Commit, push, and tag version update
         run: |
