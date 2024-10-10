@@ -82,7 +82,7 @@ jobs:
         run: |
           imageDigest=$(cat ${{ env.IMAGE_NAME }}_${{ env.VERSION }}/build_artifact.txt | grep imageDigest | cut -d '=' -f 2)
           echo "imageDigest=$imageDigest" >> $GITHUB_OUTPUT
-          echo "Image Digest: $imageDigest" >> $GITHUB_OUTPUT
+          echo "Image Digest: ${imageDigest}"
 
       - name: Azure Login
         uses: azure/login@v2
