@@ -38,16 +38,17 @@ jobs:
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}.${build_number}"
           echo $new_version > .version
           echo "Updated version to $new_version"
-          echo "::set-output name=new_version::$new_version"
 
-      - name: Commit and push version update
+      - name: Commit, push, and tag version update
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add .version
           git commit -m "Bump version to $(cat .version)"
+          git tag -a "v$(cat .version)" -m "Version $(cat .version)"
           git push
-        env:
+          git push origin "v$(cat .version)"
+          env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build:
