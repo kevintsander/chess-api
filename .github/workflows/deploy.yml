@@ -68,7 +68,7 @@ jobs:
             fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/${{ env.IMAGE_NAME }}_${{ env.VERSION }}.zip`, Buffer.from(download.data));
 
       - name: "Unzip artifact"
-        run: unzip ${{ env.IMAGE_NAME }}_${{ env.VERSION }}.zip
+        run: unzip ${{ env.IMAGE_NAME }}_${{ env.VERSION }}.zip -d ${{ env.IMAGE_NAME }}_${{ env.VERSION }}
 
       - name: "Set imageDigest environment variable"
         run: |
