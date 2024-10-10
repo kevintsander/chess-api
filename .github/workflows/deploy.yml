@@ -82,7 +82,7 @@ jobs:
         run: |
           imageDigest=$(cat ${{ env.IMAGE_NAME }}_${{ env.VERSION }}/build_artifact.txt | grep imageDigest | cut -d '=' -f 2)
           echo "Image Digest: $imageDigest"
-          echo "::set-output name=imageDigest::$imageDigest"
+          echo "imageDigest=$imageDigest" >> $GITHUB_OUTPUT
 
       - name: Azure Login
         uses: azure/login@v2
@@ -126,11 +126,11 @@ jobs:
 
       - name: Create/Update Rails Database
         run: |
-          az containerapp exec \
-            --name ${{ env.CONTAINER_APP_NAME }} \
-            --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
-            --command "bash -c 'rails db:prepare || { echo \"Rails db:prepare failed\"; exit 1; }'"
-        # --command "bash -c 'for i in {1..5}; do rails db:prepare && break || sleep 10; done'"' if we want retries?
+          script -q -c 'az containerapp exec \
+                --name ${{ env.CONTAINER_APP_NAME }} \
+                --resource-group ${{ env.CHESS_RESOURCE_GROUP_NAME }} \
+                --command "rails db:prepare"' || { echo "Failed to prepare the database"; exit 1; }
+      # --command "bash -c 'for i in {1..5}; do rails db:prepare && break || sleep 10; done'"' if we want retries?
 
       # this is the more direct way of doing this but currently gives a known error
       # - name: Create/Update Rails Database
